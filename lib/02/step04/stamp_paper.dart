@@ -3,41 +3,88 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 class StampPaper extends StatefulWidget {
   @override
   _StampPaperState createState() => _StampPaperState();
 }
 
-class _StampPaperState extends State<StampPaper> {
+class _StampPaperState extends State<StampPaper>
+    with SingleTickerProviderStateMixin {
   final StampData stamps = StampData();
   int gridCount = 3;
   double radius = 0;
+  double width = 0;
+
+  AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 200))
+          ..addListener(() {
+            if (_controller.value == 1.0) {
+              _controller.reverse();
+            }
+            double rate = (0.9 - 1) * _controller.value + 1;
+            stamps.animateAt(containsIndex, rate * radius);
+          });
+  }
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.shortestSide * 0.8;
-    radius = width / 2 / gridCount * 0.618;
+    width = MediaQuery.of(context).size.shortestSide * 0.8;
+
     return GestureDetector(
       onTapDown: _onTapDown,
       onTapUp: _onTapUp,
       onDoubleTap: _clear,
       onTapCancel: _removeLast,
       child: CustomPaint(
-        foregroundPainter: StampPainter(stamps: stamps,count:gridCount ),
+        foregroundPainter: StampPainter(stamps: stamps, count: gridCount),
         painter: BackGroundPainter(count: gridCount),
         size: Size(width, width),
       ),
     );
   }
 
+  bool contains = false;
+
   void _onTapDown(TapDownDetails details) {
+    contains = checkZone(details.localPosition);
+    if (contains) {
+      _controller.forward();
+      return;
+    }
+
+    radius = width / 2 / gridCount * 0.618;
     stamps.push(Stamp(
         radius: radius, center: details.localPosition, color: Colors.grey));
   }
 
+  int containsIndex = -1;
+
+  bool checkZone(Offset src) {
+    for (int i = 0; i < stamps.stamps.length; i++) {
+      Rect zone = Rect.fromCircle(
+          center: stamps.stamps[i].center, radius: width / gridCount / 2);
+      if (zone.contains(src)) {
+        containsIndex = i;
+        return true;
+      }
+    }
+    return false;
+  }
+
   void _onTapUp(TapUpDetails details) {
+    if (contains) {
+      contains = false;
+      return;
+    }
+
     stamps.activeLast(
-        color: stamps.stamps.length%2==0?Colors.red:Colors.blue);
+        color: stamps.stamps.length % 2 == 0 ? Colors.red : Colors.blue);
   }
 
   void _clear() {
@@ -45,6 +92,10 @@ class _StampPaperState extends State<StampPaper> {
   }
 
   void _removeLast() {
+    if (contains) {
+      contains = false;
+      return;
+    }
     stamps.removeLast();
   }
 
@@ -126,7 +177,7 @@ class StampPainter extends CustomPainter {
     ..color = Colors.white
     ..style = PaintingStyle.stroke;
 
-  StampPainter({this.stamps,this.count = 3}) : super(repaint: stamps);
+  StampPainter({this.stamps, this.count = 3}) : super(repaint: stamps);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -137,21 +188,25 @@ class StampPainter extends CustomPainter {
       double length = size.width / count;
       int x = stamp.center.dx ~/ (size.width / count);
       int y = stamp.center.dy ~/ (size.width / count);
-      double strokeWidth = stamp.radius*0.07;
+      double strokeWidth = stamp.radius * 0.07;
 
       Offset center = Offset(length * x + length / 2, length * y + length / 2);
       stamp.center = center;
       canvas.drawCircle(
           stamp.center, stamp.radius, _paint..color = stamp.color);
-      canvas.drawPath(stamp.path, _pathPaint..strokeWidth = strokeWidth..color = Colors.white);
-      canvas.drawCircle(
-          stamp.center, stamp.radius + strokeWidth*1.5, _pathPaint..color = stamp.color);
+      canvas.drawPath(
+          stamp.path,
+          _pathPaint
+            ..strokeWidth = strokeWidth
+            ..color = Colors.white);
+      canvas.drawCircle(stamp.center, stamp.radius + strokeWidth * 1.5,
+          _pathPaint..color = stamp.color);
     });
   }
 
   @override
   bool shouldRepaint(covariant StampPainter oldDelegate) {
-    return this.stamps != oldDelegate.stamps||this.count != oldDelegate.count;
+    return this.stamps != oldDelegate.stamps || this.count != oldDelegate.count;
   }
 }
 
@@ -187,6 +242,15 @@ class Stamp {
       return _path;
     }
   }
+
+  set path(Path path) {
+    _path = path;
+  }
+
+  void rePath() {
+    _path = null;
+    _path = path;
+  }
 }
 
 class StampData extends ChangeNotifier {
@@ -209,6 +273,12 @@ class StampData extends ChangeNotifier {
 
   void clear() {
     stamps.clear();
+    notifyListeners();
+  }
+
+  void animateAt(int index, double radius) {
+    stamps[index].radius = radius;
+    stamps[index].rePath();
     notifyListeners();
   }
 }
