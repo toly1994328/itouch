@@ -2,7 +2,6 @@ import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-
 import 'stamp_data.dart';
 
 class StampPaper extends StatefulWidget {
@@ -16,6 +15,9 @@ class _StampPaperState extends State<StampPaper>
   int gridCount = 3;
   double radius = 0;
   double width = 0;
+  GameState gameState = GameState.doing;
+
+  bool get gameOver => gameState != GameState.doing;
 
   // 定义动画器
   AnimationController _controller;
@@ -56,6 +58,8 @@ class _StampPaperState extends State<StampPaper>
   bool get contains => containsIndex != -1;
 
   void _onTapDown(TapDownDetails details) {
+    if (gameOver) return;
+
     containsIndex = checkZone(details.localPosition);
     if (contains) {
       _controller.forward();
@@ -81,18 +85,33 @@ class _StampPaperState extends State<StampPaper>
   }
 
   void _onTapUp(TapUpDetails details) {
-    if (contains) return;
+    if (contains || gameOver) return;
 
     stamps.activeLast(
         color: stamps.stamps.length % 2 == 0 ? Colors.red : Colors.blue);
+
+    gameState = stamps.checkWin(width / gridCount);
+    if (gameState == GameState.redWin) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("红棋获胜!"),
+        backgroundColor: Colors.red,
+      ));
+    }
+
+    if (gameState == GameState.blueWin) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("蓝棋获胜!"), backgroundColor: Colors.blue));
+    }
   }
 
   void _clear() {
     stamps.clear();
+    gameState=GameState.doing;
   }
 
   void _removeLast() {
-    if (contains) return;
+    if (contains || gameOver) return;
+
     stamps.removeLast();
   }
 
@@ -206,4 +225,3 @@ class StampPainter extends CustomPainter {
     return this.stamps != oldDelegate.stamps || this.count != oldDelegate.count;
   }
 }
-

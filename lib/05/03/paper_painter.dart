@@ -1,0 +1,26 @@
+import 'package:flutter/material.dart';
+
+import 'model/paint_model.dart';
+
+const double _kSpringWidth = 30;
+
+class PaperPainter extends CustomPainter {
+  final PaintModel model;
+
+  PaperPainter({this.model}):super(repaint: model);
+
+  Paint _paint = Paint()
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 1;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+      model.lines.forEach((line) {
+        line.paint(canvas,_paint);
+      });
+  }
+
+  @override
+  bool shouldRepaint(covariant PaperPainter oldDelegate) =>
+      oldDelegate.model != model;
+}
