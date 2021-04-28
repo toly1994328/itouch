@@ -13,14 +13,32 @@ class PaperPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.translate(size.width / 2, size.height / 2);
-    canvas.transform(model.matrix.storage);
-    canvas.translate(-size.width / 2, -size.height / 2);
+
+    final Matrix4 result = Matrix4.identity();
+    result.translate(size.width / 2, size.height / 2);
+    result.multiply(model.matrix);
+    result.translate(-size.width / 2, -size.height / 2);
+
+    canvas.transform(result.storage);
 
     model.lines.forEach((line) {
-        line.paint(canvas,_paint);
+        line.paint(canvas,size,_paint);
       });
   }
+
+  // Matrix4  _effectiveTransform(Offset origin) {
+  //
+  //   if (origin == null)
+  //     return model.matrix;
+  //   final Matrix4 result = Matrix4.identity();
+  //   if (origin != null)
+  //     result.translate(origin.dx, origin.dy);
+  //   result.multiply(model.matrix);
+  //   if (origin != null)
+  //     result.translate(-origin.dx, -origin.dy);
+  //   return result;
+  // }
+
 
   @override
   bool shouldRepaint(covariant PaperPainter oldDelegate) =>

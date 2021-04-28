@@ -5,6 +5,7 @@ import 'point.dart';
 
 class PaintModel extends ChangeNotifier {
   List<Line> _lines = [];
+
   Matrix4 _matrix = Matrix4.identity();
 
   set matrix(Matrix4 value) {

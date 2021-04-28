@@ -15,6 +15,7 @@ class Line {
   Matrix4 matrix = Matrix4.identity();
 
 
+
   Path _linePath = Path();
   Path _recodePath;
 
@@ -30,7 +31,20 @@ class Line {
       this.strokeWidth = 1,
       this.state = PaintState.doing});
 
-  void paint(Canvas canvas, Paint paint) {
+  void paint(Canvas canvas, Size size, Paint paint) {
+
+    canvas.save();
+
+
+    final Matrix4 result = Matrix4.identity();
+    result.translate(size.width / 2, size.height / 2);
+    result.multiply(matrix);
+    result.translate(-size.width / 2, -size.height / 2);
+    result.invert();
+    canvas.transform(result.storage);
+
+
+
     paint
       ..style = PaintingStyle.stroke
       ..color = color
@@ -39,7 +53,7 @@ class Line {
       ..strokeWidth = strokeWidth;
 
     if (state == PaintState.doing) {
-      _linePath = formPath().transform(matrix.storage);
+      // _linePath = formPath().transform(matrix.storage);
       _linePath = formPath();
       // print(matrix.storage);
     }
@@ -54,6 +68,8 @@ class Line {
     }
 
     canvas.drawPath(_linePath, paint);
+    canvas.restore();
+
   }
 
   Path formPath() {
