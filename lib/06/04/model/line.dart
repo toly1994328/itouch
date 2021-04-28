@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'point.dart';
 
-enum PaintState { doing, done, hide }
+enum PaintState { doing, done, hide, edit}
 
 class Line {
   List<Point> points = [];
@@ -12,7 +12,18 @@ class Line {
   double strokeWidth;
   Color color;
 
+  Matrix4 matrix = Matrix4.identity();
+
+
   Path _linePath = Path();
+  Path _recodePath;
+
+  Path get path => _linePath;
+
+  void translate(Offset offset) {
+    if(_recodePath==null) return;
+    _linePath = _recodePath.shift(offset);
+  }
 
   Line(
       {this.color = Colors.black,
@@ -28,8 +39,20 @@ class Line {
       ..strokeWidth = strokeWidth;
 
     if (state == PaintState.doing) {
+      _linePath = formPath().transform(matrix.storage);
       _linePath = formPath();
+      // print(matrix.storage);
     }
+
+    if (state == PaintState.edit) {
+      Paint paint1 = Paint()..strokeWidth=1 ..style = PaintingStyle.stroke..color=Colors.deepPurpleAccent;
+
+      canvas.drawRect(Rect.fromCenter(
+          center: _linePath.getBounds().center,
+          width: _linePath.getBounds().width+strokeWidth,
+          height:  _linePath.getBounds().height+strokeWidth), paint1);
+    }
+
     canvas.drawPath(_linePath, paint);
   }
 
@@ -57,5 +80,9 @@ class Line {
   @override
   String toString() {
     return 'Line{points: $points, state: $state, strokeWidth: $strokeWidth, color: $color}';
+  }
+
+  void recode() {
+    _recodePath = path.shift(Offset.zero);
   }
 }

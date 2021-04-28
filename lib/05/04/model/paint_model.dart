@@ -6,7 +6,7 @@ import 'point.dart';
 class PaintModel extends ChangeNotifier {
   List<Line> _lines = [];
 
-  final double tolerance = 18.0;
+  final double tolerance = 8.0;
 
   Line get activeLine =>
       _lines.singleWhere((element) => element.state == PaintState.doing,

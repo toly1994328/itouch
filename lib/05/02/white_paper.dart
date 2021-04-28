@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'component/paint_setting_dialog.dart';
 import 'model/line.dart';
 import 'model/paint_model.dart';
 import 'model/point.dart';
-
 import 'paper_painter.dart';
 
 class WhitePaper extends StatefulWidget {
@@ -17,9 +19,15 @@ class _WhitePaperState extends State<WhitePaper> {
   double strokeWidth = 1;
 
   @override
+  void dispose() {
+    paintModel.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onLongPress: _showSettingDialog,
+        onTap: _showSettingDialog,
         onPanDown: _initLineData,
         onPanUpdate: _collectPoint,
         onPanEnd: _doneALine,
@@ -55,7 +63,21 @@ class _WhitePaperState extends State<WhitePaper> {
   }
 
   void _showSettingDialog() {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (context) => PaintSettingDialog(
+              initColor: lineColor,
+              initWidth: strokeWidth,
+              onLineWidthSelect: _selectWidth,
+              onColorSelect: _selectColor,
+            ));
+  }
 
+  void _selectWidth(double width) {
+    strokeWidth = width;
+  }
 
+  void _selectColor(Color color) {
+    lineColor = color;
   }
 }

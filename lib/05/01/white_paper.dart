@@ -19,7 +19,6 @@ class _WhitePaperState extends State<WhitePaper> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onLongPress: _showSettingDialog,
         onPanDown: _initLineData,
         onPanUpdate: _collectPoint,
         onPanEnd: _doneALine,
@@ -57,8 +56,4 @@ class _WhitePaperState extends State<WhitePaper> {
     paintModel.removeEmpty();
   }
 
-  void _showSettingDialog() {
-
-
-  }
 }

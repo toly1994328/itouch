@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'scale_gesture_demo.dart';
-
+import 'white_paper.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized(); // 确定初始化
@@ -25,7 +24,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: Center(
-          child: ScaleGestureDemo(),
+          child: WhitePaper(),
         ),
       ),
     );

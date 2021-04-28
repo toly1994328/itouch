@@ -24,13 +24,15 @@ class _WhitePaperState extends State<WhitePaper> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: _showSettingDialog,
         onPanDown: _initLineData,
         onPanUpdate: _collectPoint,
+        onLongPressStart: _activeEdit,
+        onLongPressUp: _cancelEdit,
+        onLongPressMoveUpdate: _moveEdit,
         onPanEnd: _doneALine,
         onPanCancel: _cancel,
         onDoubleTap: _clear,
@@ -80,5 +82,17 @@ class _WhitePaperState extends State<WhitePaper> {
 
   void _selectColor(Color color) {
     lineColor = color;
+  }
+
+  void _activeEdit(LongPressStartDetails details) {
+    paintModel.activeEditLine(Point.fromOffset(details.localPosition));
+  }
+
+  void _cancelEdit() {
+    paintModel.cancelEditLine();
+  }
+
+  void _moveEdit(LongPressMoveUpdateDetails details) {
+    paintModel.moveEditLine(details.offsetFromOrigin);
   }
 }

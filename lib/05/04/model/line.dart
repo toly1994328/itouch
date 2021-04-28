@@ -30,7 +30,14 @@ class Line {
     if (state == PaintState.doing) {
       _linePath = formPath();
     }
+
     canvas.drawPath(_linePath, paint);
+
+    Path p1 =_linePath.shift(Offset(paint.strokeWidth/2, paint.strokeWidth/2));
+    Path p2 =_linePath.shift(Offset(-paint.strokeWidth/2, -paint.strokeWidth/2));
+    Paint paint1= Paint()..strokeWidth=1 ..style = PaintingStyle.stroke;
+    canvas.drawPath(p1, paint1);
+    canvas.drawPath(p2, paint1);
   }
 
   Path formPath() {

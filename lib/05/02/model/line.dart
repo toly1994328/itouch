@@ -20,7 +20,7 @@ class Line {
   void paint(Canvas canvas, Paint paint) {
     paint
       ..style = PaintingStyle.stroke
-      ..color = color
+      ..color = color..strokeJoin=StrokeJoin.round
       ..strokeWidth = strokeWidth;
     canvas.drawPoints(PointMode.polygon, points.map<Offset>((e) => e.toOffset()).toList(), paint);
   }
