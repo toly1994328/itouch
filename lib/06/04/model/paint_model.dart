@@ -37,16 +37,14 @@ class PaintModel extends ChangeNotifier {
     if (activeLine.points.isNotEmpty && !force) {
       if ((point - activeLine.points.last).distance < tolerance) return;
     }
-    activeLine.matrix = _matrix;
     activeLine.points.add(point);
     notifyListeners();
   }
 
   void activeEditLine(Point point) {
     List<Line> lines = _lines
-        .where((line) => line.path.getBounds().contains(point.toOffset()))
+        .where((line) => line.contains(point.toOffset(),_matrix))
         .toList();
-    print(lines.length);
     if (lines.isNotEmpty) {
       lines[0].state = PaintState.edit;
       lines[0].recode();
@@ -61,7 +59,7 @@ class PaintModel extends ChangeNotifier {
 
   void moveEditLine(Offset offset) {
     if (editLine == null) return;
-    editLine.translate(offset);
+    editLine.translate(offset,matrix);
     notifyListeners();
   }
 

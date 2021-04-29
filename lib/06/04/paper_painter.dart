@@ -22,23 +22,9 @@ class PaperPainter extends CustomPainter {
     canvas.transform(result.storage);
 
     model.lines.forEach((line) {
-        line.paint(canvas,size,_paint);
+        line.paint(canvas,size,_paint,model.matrix);
       });
   }
-
-  // Matrix4  _effectiveTransform(Offset origin) {
-  //
-  //   if (origin == null)
-  //     return model.matrix;
-  //   final Matrix4 result = Matrix4.identity();
-  //   if (origin != null)
-  //     result.translate(origin.dx, origin.dy);
-  //   result.multiply(model.matrix);
-  //   if (origin != null)
-  //     result.translate(-origin.dx, -origin.dy);
-  //   return result;
-  // }
-
 
   @override
   bool shouldRepaint(covariant PaperPainter oldDelegate) =>

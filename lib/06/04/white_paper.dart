@@ -58,12 +58,6 @@ class _WhitePaperState extends State<WhitePaper> {
     );
   }
 
-  void _initLineData(DragDownDetails details) {
-    print('_initLineData');
-    Line line = Line(color: lineColor, strokeWidth: strokeWidth);
-    paintModel.pushLine(line);
-  }
-
   void _clear() {
     paintModel.clear();
   }
@@ -109,8 +103,7 @@ class _WhitePaperState extends State<WhitePaper> {
   Widget _buildTools() {
     return ValueListenableBuilder(
       valueListenable: type,
-      builder: (_, value, __) {
-        return Row(
+      builder: (_, value, __) => Row(
           mainAxisSize: MainAxisSize.min,
           children: icons.asMap().keys.map((index) {
             bool active = value == TransformType.values[index];
@@ -121,8 +114,7 @@ class _WhitePaperState extends State<WhitePaper> {
                   color: active ? Colors.blue : Colors.grey,
                 ));
           }).toList(),
-        );
-      },
+        ),
     );
   }
 
@@ -150,11 +142,12 @@ class _WhitePaperState extends State<WhitePaper> {
         paintModel.pushPoint(Point.fromOffset(details.localFocalPoint));
         break;
       case TransformType.translate:
-        paintModel.matrix = Matrix4.translationValues(
-                (details.focalPoint.dx - _offset.dx),
-                (details.focalPoint.dy - _offset.dy),
-                1)
-            .multiplied(recodeMatrix);
+        double dx =details.focalPoint.dx - _offset.dx;
+        double dy =details.focalPoint.dy - _offset.dy;
+
+        paintModel.matrix = Matrix4.translationValues(dx, dy, 1).multiplied(recodeMatrix);
+
+
         break;
       case TransformType.rotate:
         paintModel.matrix =
