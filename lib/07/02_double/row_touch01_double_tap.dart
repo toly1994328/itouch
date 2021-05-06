@@ -13,14 +13,38 @@ class _RawGestureDetectorDemoState extends State<RawGestureDetectorDemo> {
   @override
   Widget build(BuildContext context) {
     Map<Type, GestureRecognizerFactory> gestures = {
+      MultiTapGestureRecognizer:
+          GestureRecognizerFactoryWithHandlers<MultiTapGestureRecognizer>(
+        () => MultiTapGestureRecognizer(),
+        (MultiTapGestureRecognizer instance) => instance
+          ..onTap = _onMultiTap
+          ..onTapUp = _onMultiTapUp
+          ..onTapDown = _onMultiTapDown
+          ..onTapCancel = _onMultiTapCancel
+          ..onLongTapDown = _onLongMultiTapDown,
+      ),
+      // TapGestureRecognizer: GestureRecognizerFactoryWithHandlers<
+      //     TapGestureRecognizer>(
+      //       () {
+      //     return TapGestureRecognizer();
+      //   },
+      //       (TapGestureRecognizer instance) {
+      //     instance
+      //       ..onTapDown = _tapDown
+      //       ..onTapUp = _tapUp
+      //       ..onTap = _tap
+      //       ..onTapCancel = _tapCancel;
+      //   },
+      // ),
       DoubleTapGestureRecognizer:
-          GestureRecognizerFactoryWithHandlers<DoubleTapGestureRecognizer>(
-        () => DoubleTapGestureRecognizer(),
-        (DoubleTapGestureRecognizer instance) => instance
+      GestureRecognizerFactoryWithHandlers<DoubleTapGestureRecognizer>(
+            () => DoubleTapGestureRecognizer(),
+            (DoubleTapGestureRecognizer instance) => instance
           ..onDoubleTap = _doubleTap
           ..onDoubleTapDown = _doubleDown
           ..onDoubleTapCancel = _doubleTapCancel,
       ),
+
     };
 
     return RawGestureDetector(
@@ -29,10 +53,48 @@ class _RawGestureDetectorDemoState extends State<RawGestureDetectorDemo> {
           color: Colors.blue,
           alignment: Alignment.center,
           child: Text(
-            "双击测试",
+            "多触点测试",
             style: TextStyle(color: Colors.white),
           )),
     );
+  }
+
+  void _onMultiTap(int pointer) {
+    print('_onTap-----[$pointer]--');
+  }
+
+  void _onMultiTapUp(int pointer, TapUpDetails details) {
+    print('_onTapUp-----[$pointer]---${details}----');
+  }
+
+  void _onMultiTapDown(int pointer, TapDownDetails details) {
+    print('_onTapDown-----[$pointer]---${details}----');
+  }
+
+  void _onMultiTapCancel(int pointer) {
+    print('_onTapCancel-----[$pointer]------');
+  }
+
+  void _onLongMultiTapDown(int pointer, TapDownDetails details) {
+    print('_onLongTapDown-----[$pointer]---${details}----');
+  }
+
+
+  void _tapDown(TapDownDetails details) {
+    print('_tapDown');
+  }
+
+  void _tapUp(TapUpDetails details) {
+    print('_tapUp');
+  }
+
+  void _tap() {
+    print('_tap');
+  }
+
+  void _tapCancel() {
+    print('_tapCancel');
+
   }
 
   void _doubleTap() {

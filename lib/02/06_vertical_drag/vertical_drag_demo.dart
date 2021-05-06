@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-class SimpleTouch extends StatelessWidget {
+class VerticalDragDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

@@ -1,8 +1,8 @@
 
-
 import 'package:flutter/material.dart';
 
-class SimpleTouch extends StatelessWidget {
+class LongPressDemo extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

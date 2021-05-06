@@ -15,16 +15,16 @@ class _RawGestureDetectorDemoState extends State<RawGestureDetectorDemo> {
   @override
   Widget build(BuildContext context) {
     var gestures = <Type, GestureRecognizerFactory>{
-      NTapGestureRecognizer: GestureRecognizerFactoryWithHandlers<NTapGestureRecognizer>(() {
-        return NTapGestureRecognizer(maxN: 8);
-      },
-            (NTapGestureRecognizer instance) {
-          instance
-            ..onNTap = _onNTap
-            ..onNTapDown = _onNTapDown
-            ..onNTapCancel = _onNTapCancel;
-        },
-      ),
+      // NTapGestureRecognizer: GestureRecognizerFactoryWithHandlers<NTapGestureRecognizer>(() {
+      //   return NTapGestureRecognizer(maxN: 8);
+      // },
+      //       (NTapGestureRecognizer instance) {
+      //     instance
+      //       ..onNTap = _onNTap
+      //       ..onNTapDown = _onNTapDown
+      //       ..onNTapCancel = _onNTapCancel;
+      //   },
+      // ),
       TapGestureRecognizer:
       GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(() {
         return TapGestureRecognizer();

@@ -1,6 +1,8 @@
+
 import 'package:flutter/material.dart';
 
-class SimpleTouch extends StatelessWidget {
+class PanDemo extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -9,19 +11,19 @@ class SimpleTouch extends StatelessWidget {
         height: 200,
         color: Colors.grey.withAlpha(33),
         child: ListView(
-            children: [
-              GestureDetector(
-                  onPanStart: _onPanStart,
-                  onPanDown: _onPanDown,
-                  onPanEnd: _onPanEnd,
-                  onPanCancel: _onPanCancel,
-                  onPanUpdate: _onPanUpdate,
-                  child: Container(color: Colors.blue, height: 80)),
-              Container(color: Colors.red, height: 80),
-              Container(color: Colors.yellow, height: 80),
-              Container(color: Colors.green, height: 80),
-            ],
-          ),
+          children: [
+            GestureDetector(
+                onPanStart: _onPanStart,
+                onPanDown: _onPanDown,
+                onPanEnd: _onPanEnd,
+                onPanCancel: _onPanCancel,
+                onPanUpdate: _onPanUpdate,
+                child: Container(color: Colors.blue, height: 80)),
+            Container(color: Colors.red, height: 80),
+            Container(color: Colors.yellow, height: 80),
+            Container(color: Colors.green, height: 80),
+          ],
+        ),
       ),
     );
   }

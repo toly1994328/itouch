@@ -1,34 +1,35 @@
 
 import 'package:flutter/material.dart';
 
-class SimpleTouch extends StatelessWidget {
+class HorizontalDragDemo extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onVerticalDragDown: _onVerticalDragDown,
-        onVerticalDragStart: _onVerticalDragStart,
-        onVerticalDragUpdate: _onVerticalDragUpdate,
-        onVerticalDragCancel: _onVerticalDragCancel,
-        onVerticalDragEnd: _onVerticalDragEnd,
+        onHorizontalDragDown: _onHorizontalDragDown,
+        onHorizontalDragStart: _onHorizontalDragStart,
+        onHorizontalDragUpdate: _onHorizontalDragUpdate,
+        onHorizontalDragCancel: _onHorizontalDragCancel,
+        onHorizontalDragEnd: _onHorizontalDragEnd,
         child: Container(color: Colors.blue, height: 200,width: 200,));
   }
 
-  void _onVerticalDragDown(DragDownDetails details) {
-    print('_onVerticalDragDown:'
+  void _onHorizontalDragDown(DragDownDetails details) {
+    print('_onHorizontalDragDown:'
         'localPosition:${parserOffset(details.localPosition)};'
         'globalPosition:${parserOffset(details.globalPosition)};');
   }
 
-  void _onVerticalDragStart(DragStartDetails details) {
-    print('_onVerticalDragStart:'
+  void _onHorizontalDragStart(DragStartDetails details) {
+    print('_onHorizontalDragStart:'
         'localPosition:${parserOffset(details.localPosition)};'
         'globalPosition:${parserOffset(details.globalPosition)};'
         'sourceTimeStamp:${details.sourceTimeStamp};'
         'kind:${details.kind};');
   }
 
-  void _onVerticalDragUpdate(DragUpdateDetails details) {
-    print('_onVerticalDragUpdate:'
+  void _onHorizontalDragUpdate(DragUpdateDetails details) {
+    print('_onHorizontalDragUpdate:'
         'localPosition:${parserOffset(details.localPosition)};'
         'globalPosition:${parserOffset(details.globalPosition)};'
         'sourceTimeStamp:${details.sourceTimeStamp};'
@@ -36,14 +37,14 @@ class SimpleTouch extends StatelessWidget {
         'primaryDelta:${details.primaryDelta};');
   }
 
-  void _onVerticalDragEnd(DragEndDetails details) {
-    print('_onVerticalDragEnd:'
+  void _onHorizontalDragEnd(DragEndDetails details) {
+    print('_onHorizontalDragEnd:'
         'velocity:${details.velocity};'
         'primaryVelocity:${details.primaryVelocity};');
   }
 
-  void _onVerticalDragCancel() {
-    print('-----_onVerticalDragCancel---------');
+  void _onHorizontalDragCancel() {
+    print('-----_onHorizontalDragCancel---------');
   }
 
   String parserOffset(Offset offset) {
@@ -51,4 +52,3 @@ class SimpleTouch extends StatelessWidget {
   }
 
 }
-
