@@ -9,8 +9,6 @@ class StampPaper extends StatefulWidget {
 class _StampPaperState extends State<StampPaper> {
   final StampData stamps = StampData();
 
-
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
