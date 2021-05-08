@@ -10,22 +10,17 @@ class _RawGestureDetectorDemoState extends State<RawGestureDetectorDemo> {
   String action = '';
   Color color = Colors.blue;
 
-
   @override
   Widget build(BuildContext context) {
     var gestures = <Type, GestureRecognizerFactory>{
       TapGestureRecognizer: GestureRecognizerFactoryWithHandlers<
           TapGestureRecognizer>(
-            () {
-          return TapGestureRecognizer();
-        },
-            (TapGestureRecognizer instance) {
-          instance
+            () => TapGestureRecognizer(),
+            (TapGestureRecognizer instance) => instance
             ..onTapDown = _tapDown
             ..onTapUp = _tapUp
             ..onTap = _tap
-            ..onTapCancel = _tapCancel;
-        },
+            ..onTapCancel = _tapCancel,
       ),
     };
     return RawGestureDetector(
@@ -36,7 +31,6 @@ class _RawGestureDetectorDemoState extends State<RawGestureDetectorDemo> {
           color: color,
           alignment: Alignment.center,
           child: Text("action:$action",
-
             style: TextStyle(color: Colors.white),)),
     );
   }
@@ -54,13 +48,12 @@ class _RawGestureDetectorDemoState extends State<RawGestureDetectorDemo> {
 
     setState(() {
       action = 'up';
-      color = Colors.purple;
+      color = Colors.green;
     });
   }
 
   void _tap() {
     print('_tap');
-
     setState(() {
       action = 'tap';
     });
@@ -70,16 +63,7 @@ class _RawGestureDetectorDemoState extends State<RawGestureDetectorDemo> {
     print('_tapCancel');
     setState(() {
       action = 'cancel';
-      color = Colors.orange;
-    });
-  }
-
-  void _doubleTap() {
-    print('_doubleTap');
-
-    setState(() {
-      action = 'doubleTap';
-      color = Colors.yellow;
+      color = Colors.red;
     });
   }
 }

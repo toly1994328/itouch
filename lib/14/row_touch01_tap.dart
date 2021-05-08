@@ -15,16 +15,17 @@ class _RawGestureDetectorDemoState extends State<RawGestureDetectorDemo> {
   @override
   Widget build(BuildContext context) {
     var gestures = <Type, GestureRecognizerFactory>{
-      // NTapGestureRecognizer: GestureRecognizerFactoryWithHandlers<NTapGestureRecognizer>(() {
-      //   return NTapGestureRecognizer(maxN: 8);
-      // },
-      //       (NTapGestureRecognizer instance) {
-      //     instance
-      //       ..onNTap = _onNTap
-      //       ..onNTapDown = _onNTapDown
-      //       ..onNTapCancel = _onNTapCancel;
-      //   },
-      // ),
+
+      NTapGestureRecognizer: GestureRecognizerFactoryWithHandlers<NTapGestureRecognizer>(() {
+        return NTapGestureRecognizer(maxN: 8);
+      },
+            (NTapGestureRecognizer instance) {
+          instance
+            ..onNTap = _onNTap
+            ..onNTapDown = _onNTapDown
+            ..onNTapCancel = _onNTapCancel;
+        },
+      ),
       TapGestureRecognizer:
       GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(() {
         return TapGestureRecognizer();
@@ -60,12 +61,22 @@ class _RawGestureDetectorDemoState extends State<RawGestureDetectorDemo> {
   }
 
 
+
   void _tapDown(TapDownDetails details) {
     print('_tapDown');
+    setState(() {
+      action = 'down';
+      color = Colors.blue;
+    });
   }
 
   void _tapUp(TapUpDetails details) {
     print('_tapUp');
+
+    setState(() {
+      action = 'up';
+      color = Colors.blue;
+    });
   }
 
   void _tap() {
@@ -78,10 +89,15 @@ class _RawGestureDetectorDemoState extends State<RawGestureDetectorDemo> {
 
   void _tapCancel() {
     print('_tapCancel');
+    setState(() {
+      action = 'cancel';
+      color = Colors.orange;
+    });
   }
 
   void _onNTap() {
     print('_onNTap-----[8]---');
+
     setState(() {
       action = '_on 8 Tap';
       color = Colors.green;
