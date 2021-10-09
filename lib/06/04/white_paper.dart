@@ -104,17 +104,17 @@ class _WhitePaperState extends State<WhitePaper> {
     return ValueListenableBuilder(
       valueListenable: type,
       builder: (_, value, __) => Row(
-          mainAxisSize: MainAxisSize.min,
-          children: icons.asMap().keys.map((index) {
-            bool active = value == TransformType.values[index];
-            return IconButton(
-                onPressed: () => type.value = TransformType.values[index],
-                icon: Icon(
-                  icons[index],
-                  color: active ? Colors.blue : Colors.grey,
-                ));
-          }).toList(),
-        ),
+        mainAxisSize: MainAxisSize.min,
+        children: icons.asMap().keys.map((index) {
+          bool active = value == TransformType.values[index];
+          return IconButton(
+              onPressed: () => type.value = TransformType.values[index],
+              icon: Icon(
+                icons[index],
+                color: active ? Colors.blue : Colors.grey,
+              ));
+        }).toList(),
+      ),
     );
   }
 
@@ -142,11 +142,12 @@ class _WhitePaperState extends State<WhitePaper> {
         paintModel.pushPoint(Point.fromOffset(details.localFocalPoint));
         break;
       case TransformType.translate:
-        double dx =details.focalPoint.dx - _offset.dx;
-        double dy =details.focalPoint.dy - _offset.dy;
+        if (details.pointerCount > 1) return;
+        double dx = details.focalPoint.dx - _offset.dx;
+        double dy = details.focalPoint.dy - _offset.dy;
 
-        paintModel.matrix = Matrix4.translationValues(dx, dy, 1).multiplied(recodeMatrix);
-
+        paintModel.matrix =
+            Matrix4.translationValues(dx, dy, 1).multiplied(recodeMatrix);
 
         break;
       case TransformType.rotate:

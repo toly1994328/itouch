@@ -24,7 +24,6 @@ class _WhitePaperState extends State<WhitePaper> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -43,6 +42,7 @@ class _WhitePaperState extends State<WhitePaper> {
     print('_initLineData');
     Line line = Line(color: lineColor, strokeWidth: strokeWidth);
     paintModel.pushLine(line);
+    paintModel.pushPoint(Point.fromOffset(details.localPosition));
   }
 
   void _doneALine(DragEndDetails details) {

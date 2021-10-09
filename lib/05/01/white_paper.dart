@@ -38,6 +38,7 @@ class _WhitePaperState extends State<WhitePaper> {
   void _initLineData(DragDownDetails details) {
     Line line = Line(color: lineColor, strokeWidth: strokeWidth);
     paintModel.pushLine(line);
+    paintModel.pushPoint(Point.fromOffset(details.localPosition));
   }
 
   void _doneALine(DragEndDetails details) {
@@ -55,5 +56,4 @@ class _WhitePaperState extends State<WhitePaper> {
   void _cancel() {
     paintModel.removeEmpty();
   }
-
 }
