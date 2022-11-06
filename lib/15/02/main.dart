@@ -42,11 +42,11 @@ class _ListenerDemoState extends State<ListenerDemo> {
 class PointerTrack {
 
   startTrackingPointOne(){
-    GestureBinding.instance.pointerRouter.addRoute(1, handleMyEvent);
+    GestureBinding.instance!.pointerRouter.addRoute(1, handleMyEvent);
   }
 
   stopTrackingPointOne(){
-    GestureBinding.instance.pointerRouter.removeRoute(1, handleMyEvent);
+    GestureBinding.instance!.pointerRouter.removeRoute(1, handleMyEvent);
   }
 
   void handleMyEvent(PointerEvent event) {

@@ -13,14 +13,14 @@ class Line {
   Color color;
 
   Path _linePath = Path();
-  Path _recodePath;
+  Path? _recodePath;
 
 
   Path get path => _linePath;
 
   void translate(Offset offset) {
     if(_recodePath==null) return;
-    _linePath = _recodePath.shift(offset);
+    _linePath = _recodePath!.shift(offset);
   }
 
   Line(

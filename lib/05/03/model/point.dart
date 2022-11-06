@@ -6,7 +6,7 @@ class Point {
   final double x;
   final double y;
 
-  const Point({this.x, this.y});
+  const Point({this.x=0, this.y=0});
 
   double get distance => sqrt(x * x + y * y);
 

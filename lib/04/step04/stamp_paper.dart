@@ -18,7 +18,7 @@ class _StampPaperState extends State<StampPaper>
   double width = 0;
 
   // 定义动画器
-  AnimationController _controller;
+  late AnimationController _controller;
   final Duration animDuration = const Duration(milliseconds: 200);
 
   @override
@@ -174,7 +174,7 @@ class StampPainter extends CustomPainter {
     ..color = Colors.white
     ..style = PaintingStyle.stroke;
 
-  StampPainter({this.stamps, this.count = 3}) : super(repaint: stamps);
+  StampPainter({required this.stamps, this.count = 3}) : super(repaint: stamps);
 
   @override
   void paint(Canvas canvas, Size size) {

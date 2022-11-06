@@ -5,7 +5,7 @@ import 'model/paint_model.dart';
 class PaperPainter extends CustomPainter {
   final PaintModel model;
 
-  PaperPainter({this.model}):super(repaint: model);
+  PaperPainter({required this.model}):super(repaint: model);
 
   Paint _paint = Paint()
     ..style = PaintingStyle.stroke

@@ -9,10 +9,10 @@ class ColorSelect extends StatefulWidget {
   final ColorSelectCallback onColorSelect;
 
   ColorSelect(
-      {this.colors,
-      this.radius = 25,
-      this.defaultColor,
-      @required this.onColorSelect});
+      {required this.colors,
+         this.radius = 25,
+        required this.defaultColor,
+      required this.onColorSelect});
 
   @override
   _ColorSelectState createState() => _ColorSelectState();

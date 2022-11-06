@@ -23,8 +23,8 @@ class PaintSettingDialog extends StatelessWidget {
   final double initWidth;
 
   PaintSettingDialog({
-    @required this.onLineWidthSelect,
-    @required this.onColorSelect,
+    required this.onLineWidthSelect,
+    required this.onColorSelect,
     this.initColor=Colors.black,
     this.initWidth= 1,
   });

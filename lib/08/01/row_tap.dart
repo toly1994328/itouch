@@ -12,6 +12,8 @@ class _RawGestureDetectorDemoState extends State<RawGestureDetectorDemo> {
 
   @override
   Widget build(BuildContext context) {
+
+
     var gestures = <Type, GestureRecognizerFactory>{
       TapGestureRecognizer: GestureRecognizerFactoryWithHandlers<
           TapGestureRecognizer>(
@@ -23,15 +25,20 @@ class _RawGestureDetectorDemoState extends State<RawGestureDetectorDemo> {
             ..onTapCancel = _tapCancel,
       ),
     };
-    return RawGestureDetector(
-      gestures: gestures,
-      child: Container(
-          width: 100.0,
-          height: 100.0,
-          color: color,
-          alignment: Alignment.center,
-          child: Text("action:$action",
-            style: TextStyle(color: Colors.white),)),
+    return Column(
+      children: [
+        const Divider(),
+        RawGestureDetector(
+          gestures: gestures,
+          child: Container(
+              width: 100.0,
+              height: 100.0,
+              color: color,
+              alignment: Alignment.center,
+              child: Text("action:$action",
+                style: TextStyle(color: Colors.white),)),
+        ),
+      ],
     );
   }
 

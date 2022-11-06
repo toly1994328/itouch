@@ -52,7 +52,7 @@ class StampPainter extends CustomPainter {
   final StampData stamps;
   final Paint _paint = Paint();
 
-  StampPainter({this.stamps}) : super(repaint: stamps);
+  StampPainter({required this.stamps}) : super(repaint: stamps);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -73,7 +73,7 @@ class Stamp {
   Offset center;
   double radius;
 
-  Stamp({this.color = Colors.blue, this.center, this.radius = 20});
+  Stamp({this.color = Colors.blue, this.center=Offset.zero, this.radius = 20});
 }
 
 class StampData extends ChangeNotifier {

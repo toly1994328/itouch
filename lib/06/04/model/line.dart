@@ -14,23 +14,25 @@ class Line {
 
   // Matrix4 matrix = Matrix4.identity();
 
-  Size paperSize;
+  Size? paperSize;
 
   Path _linePath = Path();
-  Path _recodePath;
+  Path? _recodePath;
 
   Path get path => _linePath;
 
-  void translate(Offset offset,[Matrix4 _matrix]) {
+  void translate(Offset offset) {
     if (_recodePath == null) return;
-    _linePath = _recodePath.shift(offset);
+    _linePath = _recodePath!.shift(offset);
   }
 
-  bool contains(Offset offset, [Matrix4 _matrix]) {
+  bool contains(Offset offset, [Matrix4? _matrix]) {
     final Matrix4 result = Matrix4.identity();
-    result.translate(paperSize.width / 2, paperSize.height / 2);
-    result.multiply(_matrix);
-    result.translate(-paperSize.width / 2, -paperSize.height / 2);
+    if (_matrix != null && paperSize != null) {
+      result.translate(paperSize!.width / 2, paperSize!.height / 2);
+      result.multiply(_matrix);
+      result.translate(-paperSize!.width / 2, -paperSize!.height / 2);
+    }
     Path judgePath = path.transform(result.storage);
     return judgePath.getBounds().contains(offset);
   }
@@ -54,9 +56,9 @@ class Line {
     if (state == PaintState.doing) {
       _linePath = formPath();
       final Matrix4 result = Matrix4.identity();
-      result.translate(paperSize.width / 2, paperSize.height / 2);
+      result.translate(paperSize!.width / 2, paperSize!.height / 2);
       result.multiply(matrix);
-      result.translate(-paperSize.width / 2, -paperSize.height / 2);
+      result.translate(-paperSize!.width / 2, -paperSize!.height / 2);
       result.invert();
       _linePath = path.transform(result.storage);
     }

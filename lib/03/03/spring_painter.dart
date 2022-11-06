@@ -7,7 +7,7 @@ class SpringPainter extends CustomPainter {
   final int count;
   final ValueListenable<double> height;
 
-  SpringPainter({this.count = 20, this.height}):super(repaint: height);
+  SpringPainter({this.count = 20,required this.height}):super(repaint: height);
 
   Paint _paint = Paint()
     ..style = PaintingStyle.stroke

@@ -12,7 +12,7 @@ typedef GestureNTapCancelCallback = void Function(int n);
 
 class NTapGestureRecognizer extends GestureRecognizer {
   NTapGestureRecognizer(
-      {Object debugOwner, PointerDeviceKind kind, this.maxN = 3})
+      {Object? debugOwner, PointerDeviceKind? kind, this.maxN = 3})
       : super(debugOwner: debugOwner, kind: kind);
 
   @override
@@ -22,27 +22,27 @@ class NTapGestureRecognizer extends GestureRecognizer {
     }
   }
 
-  GestureNTapCallback onNTap;
-  GestureNTapCancelCallback onNTapCancel;
-  GestureNTapDownCallback onNTapDown;
+  GestureNTapCallback? onNTap;
+  GestureNTapCancelCallback? onNTapCancel;
+  GestureNTapDownCallback? onNTapDown;
 
   final int maxN;
-  _TapTracker _prevTap;
+  _TapTracker? _prevTap;
 
   int tapCount = 0;
 
   final Map<int, _TapTracker> _trackers = <int, _TapTracker>{};
 
-  Timer _tapTimer;
+  Timer? _tapTimer;
 
   @override
   String get debugDescription => 'N tap';
 
   @override
   void rejectGesture(int pointer) {
-    _TapTracker tracker = _trackers[pointer];
+    _TapTracker? tracker = _trackers[pointer];
     // If tracker isn't in the list, check if this is the first tap tracker
-    if (tracker == null && _prevTap != null && _prevTap.pointer == pointer)
+    if (tracker == null && _prevTap != null && _prevTap?.pointer == pointer)
       tracker = _prevTap;
     // If tracker is still null, we rejected ourselves already
     if (tracker != null) _reject(tracker);
@@ -68,11 +68,11 @@ class NTapGestureRecognizer extends GestureRecognizer {
     tapCount++;
     if (_prevTap != null) {
       // 校验第二手势
-      if (!_prevTap.isWithinGlobalTolerance(event, kDoubleTapSlop)) {
+      if (!_prevTap!.isWithinGlobalTolerance(event, kDoubleTapSlop)) {
         // Ignore out-of-bounds second taps.
         return;
-      } else if (!_prevTap.hasElapsedMinTime() ||
-          !_prevTap.hasSameButton(event)) {
+      } else if (!_prevTap!.hasElapsedMinTime() ||
+          !_prevTap!.hasSameButton(event)) {
         // Restart when the second tap is too close to the first (touch screens
         // often detect touches intermittently), or when buttons mismatch.
         _reset();
@@ -83,7 +83,7 @@ class NTapGestureRecognizer extends GestureRecognizer {
           localPosition: event.localPosition,
           kind: getKindForPointer(event.pointer),
         );
-        invokeCallback<void>('onNTapDown', () => onNTapDown(details, tapCount));
+        invokeCallback<void>('onNTapDown', () => onNTapDown!(details, tapCount));
       }
     }
     _trackTap(event);
@@ -93,15 +93,16 @@ class NTapGestureRecognizer extends GestureRecognizer {
     _stopDoubleTapTimer();
     final _TapTracker tracker = _TapTracker(
       event: event,
-      entry: GestureBinding.instance.gestureArena.add(event.pointer, this),
+      entry: GestureBinding.instance!.gestureArena.add(event.pointer, this),
       doubleTapMinTime: kDoubleTapMinTime,
     );
     _trackers[event.pointer] = tracker;
-    tracker.startTrackingPointer(_handleEvent, event.transform);
+    tracker.startTrackingPointer(_handleEvent, event.transform!);
   }
 
   void _handleEvent(PointerEvent event) {
-    final _TapTracker tracker = _trackers[event.pointer];
+    final _TapTracker? tracker = _trackers[event.pointer];
+    if(tracker==null) return;
     if (event is PointerUpEvent) {
       if (_prevTap == null || tapCount != maxN) {
         _registerTap(tracker);
@@ -142,7 +143,7 @@ class NTapGestureRecognizer extends GestureRecognizer {
 
   void _checkCancel() {
     if (onNTapCancel != null)
-      invokeCallback<void>('onNTapCancel', ()=>onNTapCancel(tapCount));
+      invokeCallback<void>('onNTapCancel', ()=> onNTapCancel!(tapCount));
   }
 
   void _startDoubleTapTimer() {
@@ -151,7 +152,7 @@ class NTapGestureRecognizer extends GestureRecognizer {
 
   void _registerTap(_TapTracker tracker) {
     _startDoubleTapTimer();
-    GestureBinding.instance.gestureArena.hold(tracker.pointer);
+    GestureBinding.instance!.gestureArena.hold(tracker.pointer);
     // Note, order is important below in order for the clear -> reject logic to
     // work properly.
     _freezeTracker(tracker);
@@ -181,18 +182,18 @@ class NTapGestureRecognizer extends GestureRecognizer {
       if (_trackers.isNotEmpty) _checkCancel();
       // Note, order is important below in order for the resolve -> reject logic
       // to work properly.
-      final _TapTracker tracker = _prevTap;
+      final _TapTracker? tracker = _prevTap;
       _prevTap = null;
 
       if (tapCount == 1) {
-        tracker.entry.resolve(GestureDisposition.rejected);
+        tracker!.entry.resolve(GestureDisposition.rejected);
       } else {
-        tracker.entry.resolve(GestureDisposition.accepted);
+        tracker!.entry.resolve(GestureDisposition.accepted);
       }
 
       _freezeTracker(tracker);
       // _reject(tracker);
-      GestureBinding.instance.gestureArena.release(tracker.pointer);
+      GestureBinding.instance!.gestureArena.release(tracker.pointer);
     }
 
     _clearTrackers();
@@ -201,7 +202,7 @@ class NTapGestureRecognizer extends GestureRecognizer {
 
   void _stopDoubleTapTimer() {
     if (_tapTimer != null) {
-      _tapTimer.cancel();
+      _tapTimer!.cancel();
       _tapTimer = null;
     }
   }
@@ -209,9 +210,9 @@ class NTapGestureRecognizer extends GestureRecognizer {
 
 class _TapTracker {
   _TapTracker({
-    @required PointerDownEvent event,
-    @required this.entry,
-    @required Duration doubleTapMinTime,
+    required PointerDownEvent event,
+    required this.entry,
+    required Duration doubleTapMinTime,
   })  : assert(doubleTapMinTime != null),
         assert(event != null),
         assert(event.buttons != null),
@@ -232,14 +233,14 @@ class _TapTracker {
   void startTrackingPointer(PointerRoute route, Matrix4 transform) {
     if (!_isTrackingPointer) {
       _isTrackingPointer = true;
-      GestureBinding.instance.pointerRouter.addRoute(pointer, route, transform);
+      GestureBinding.instance!.pointerRouter.addRoute(pointer, route, transform);
     }
   }
 
   void stopTrackingPointer(PointerRoute route) {
     if (_isTrackingPointer) {
       _isTrackingPointer = false;
-      GestureBinding.instance.pointerRouter.removeRoute(pointer, route);
+      GestureBinding.instance!.pointerRouter.removeRoute(pointer, route);
     }
   }
 
@@ -258,7 +259,7 @@ class _TapTracker {
 }
 
 class _CountdownZoned {
-  _CountdownZoned({@required Duration duration}) : assert(duration != null) {
+  _CountdownZoned({required Duration duration}) : assert(duration != null) {
     Timer(duration, _onTimeout);
   }
 

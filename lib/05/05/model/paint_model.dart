@@ -8,14 +8,22 @@ class PaintModel extends ChangeNotifier {
 
   final double tolerance = 8.0;
 
-  Line get activeLine =>
-      _lines.singleWhere((element) => element.state == PaintState.doing,
-          orElse: () => null);
+  Line? get activeLine {
+    try {
+      return _lines.singleWhere((element) => element.state == PaintState.doing);
+    } catch (e) {
+      return null;
+    }
+  }
 
+  Line? get editLine {
+    try {
+      return _lines.singleWhere((element) => element.state == PaintState.edit);
+    } catch (e) {
+      return null;
+    }
+  }
 
-  Line get editLine =>
-      _lines.singleWhere((element) => element.state == PaintState.edit,
-          orElse: () => null);
 
   void pushLine(Line line) {
     _lines.add(line);
@@ -26,11 +34,11 @@ class PaintModel extends ChangeNotifier {
   void pushPoint(Point point, {bool force = false}) {
     if (activeLine == null) return;
 
-    if (activeLine.points.isNotEmpty && !force) {
-      if ((point - activeLine.points.last).distance < tolerance) return;
+    if (activeLine!.points.isNotEmpty && !force) {
+      if ((point - activeLine!.points.last).distance < tolerance) return;
     }
 
-    activeLine.points.add(point);
+    activeLine!.points.add(point);
     notifyListeners();
   }
 
@@ -52,13 +60,13 @@ class PaintModel extends ChangeNotifier {
 
   void moveEditLine(Offset offset) {
     if(editLine==null) return;
-    editLine.translate(offset);
+    editLine!.translate(offset);
     notifyListeners();
   }
 
   void doneLine() {
     if (activeLine == null) return;
-    activeLine.state = PaintState.done;
+    activeLine!.state = PaintState.done;
     notifyListeners();
   }
 

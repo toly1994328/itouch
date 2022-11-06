@@ -10,7 +10,7 @@ class LineWidthSelect extends StatefulWidget {
   final double defaultWidth;
 
   LineWidthSelect(
-      {this.numbers, this.width = 25,this.defaultWidth, @required this.onLineWidthSelect});
+      {required this.numbers, this.width = 25,required this.defaultWidth, required this.onLineWidthSelect});
 
   @override
   _LineWidthSelectState createState() => _LineWidthSelectState();

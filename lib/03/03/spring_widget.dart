@@ -14,7 +14,7 @@ class _SpringWidgetState extends State<SpringWidget> with SingleTickerProviderSt
 
   ValueNotifier<double> height = ValueNotifier(_kDefaultSpringHeight);
 
-  AnimationController _ctrl;
+ late AnimationController _ctrl;
 
   double s = 0;  // 移动距离
   double laseMoveLen = 0;

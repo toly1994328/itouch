@@ -1,12 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 
 class Point {
   final double x;
   final double y;
 
-  const Point({this.x, this.y});
+  const Point({this.x = 0, this.y = 0});
 
   double get distance => sqrt(x * x + y * y);
 
@@ -21,4 +22,5 @@ class Point {
 
 
   Offset toOffset()=> Offset(x,y);
+
 }

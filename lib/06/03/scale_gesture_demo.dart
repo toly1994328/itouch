@@ -68,7 +68,7 @@ class GesturePainter extends CustomPainter {
   Path girdPath = Path();
   final ValueListenable<Matrix4> matrix;
 
-  GesturePainter({this.matrix}) : super(repaint: matrix);
+  GesturePainter({required this.matrix}) : super(repaint: matrix);
 
   @override
   void paint(Canvas canvas, Size size) {

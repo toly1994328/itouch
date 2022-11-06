@@ -6,9 +6,14 @@ import 'point.dart';
 class PaintModel extends ChangeNotifier {
   List<Line> _lines = [];
 
-  Line get activeLine =>
-      _lines.singleWhere((element) => element.state == PaintState.doing,
-          orElse: () => null);
+  Line? get activeLine {
+    try {
+      return _lines.singleWhere((element) => element.state == PaintState.doing);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 
   void pushLine(Line line) {
     _lines.add(line);
@@ -18,13 +23,13 @@ class PaintModel extends ChangeNotifier {
 
   void pushPoint(Point point) {
     if (activeLine == null) return;
-    activeLine.points.add(point);
+    activeLine!.points.add(point);
     notifyListeners();
   }
 
   void doneLine() {
     if (activeLine == null) return;
-    activeLine.state = PaintState.done;
+    activeLine!.state = PaintState.done;
     notifyListeners();
   }
 
